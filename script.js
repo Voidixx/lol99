@@ -103,28 +103,28 @@ document.addEventListener("keydown", e => {
   e.preventDefault();
   if(player.slowing) return;
   
-  if(e.key == "w" && !player.up){
+  if((e.key == "w" || e.key == "ArrowUp") && !player.up){
     player.up = true;
     if(!player.directions.length) gradual(0, 5);
     player.directions.push("up");
     player.moving = true;
     player.down = false;
     remove(player.directions, "down");
-  } if(e.key == "a" && !player.left){
+  } if((e.key == "a" || e.key == "ArrowLeft") && !player.left){
     player.left = true;
     if(!player.directions.length) gradual(0, 5);
     player.directions.push("left");
     player.moving = true;
     player.right = false;
     remove(player.directions, "right");
-  } if(e.key == "s" && !player.down){
+  } if((e.key == "s" || e.key == "ArrowDown") && !player.down){
     player.down = true;
     if(!player.directions.length) gradual(0, 5);
     player.directions.push("down");
     player.moving = true;
     player.up = false;
     remove(player.directions, "up");
-  } if(e.key == "d" && !player.right){
+  } if((e.key == "d" || e.key == "ArrowRight") && !player.right){
     player.right = true;
     if(!player.directions.length) gradual(0, 5);
     player.directions.push("right");
@@ -136,7 +136,7 @@ document.addEventListener("keydown", e => {
 });
 
 document.addEventListener("keyup", e => {
-  if(e.key == "w" && player.up){
+  if((e.key == "w" || e.key == "ArrowUp") && player.up){
     remove(player.directions, "up");
     if(!player.directions.length){
       player.slowing = true;
@@ -148,7 +148,7 @@ document.addEventListener("keyup", e => {
     } else {
       player.up = false;
     }
-  } if(e.key == "a" && player.left){
+  } if((e.key == "a" || e.key == "ArrowLeft") && player.left){
     remove(player.directions, "left");
     if(!player.directions.length){
       player.slowing = true;
@@ -161,7 +161,7 @@ document.addEventListener("keyup", e => {
       player.left = false;
     }
     player.moving = false;
-  } if(e.key == "s" && player.down){
+  } if((e.key == "s" || e.key == "ArrowDown") && player.down){
     remove(player.directions, "down");
     if(!player.directions.length){
       player.slowing = true;
@@ -173,7 +173,7 @@ document.addEventListener("keyup", e => {
     } else {
       player.down = false;
     }
-  } if(e.key == "d" && player.right){
+  } if((e.key == "d" || e.key == "ArrowRight") && player.right){
     remove(player.directions, "right");
     if(!player.directions.length){
       player.slowing = true;
