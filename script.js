@@ -47,7 +47,7 @@ const player = {
 player.x = random(player.radius, 2000 - player.radius);
 player.y = random(player.radius, 2000 - player.radius);
 
-function speeding(from, to){
+function gradual(from, to){
   return new Promise((resolve, reject) => {
     var num = 0.5;
     if(from > to) num = -num;
@@ -105,28 +105,28 @@ document.addEventListener("keydown", e => {
   
   if(e.key == "w" && !player.up){
     player.up = true;
-    if(!player.directions.length) speeding(0, 5);
+    if(!player.directions.length) gradual(0, 5);
     player.directions.push("up");
     player.moving = true;
     player.down = false;
     remove(player.directions, "down");
   } if(e.key == "a" && !player.left){
     player.left = true;
-    if(!player.directions.length) speeding(0, 5);
+    if(!player.directions.length) gradual(0, 5);
     player.directions.push("left");
     player.moving = true;
     player.right = false;
     remove(player.directions, "right");
   } if(e.key == "s" && !player.down){
     player.down = true;
-    if(!player.directions.length) speeding(0, 5);
+    if(!player.directions.length) gradual(0, 5);
     player.directions.push("down");
     player.moving = true;
     player.up = false;
     remove(player.directions, "up");
   } if(e.key == "d" && !player.right){
     player.right = true;
-    if(!player.directions.length) speeding(0, 5);
+    if(!player.directions.length) gradual(0, 5);
     player.directions.push("right");
     player.moving = true;
     player.left = false;
@@ -141,7 +141,7 @@ document.addEventListener("keyup", e => {
     if(!player.directions.length){
       player.slowing = true;
       player.moving = false;
-      speeding(5, 0).then(() => {
+      gradual(5, 0).then(() => {
         player.up = false;
         player.slowing = false;
       });
@@ -153,7 +153,7 @@ document.addEventListener("keyup", e => {
     if(!player.directions.length){
       player.slowing = true;
       player.moving = false;
-      speeding(5, 0).then(() => {
+      gradual(5, 0).then(() => {
         player.left = false;
         player.slowing = false;
       });
@@ -166,7 +166,7 @@ document.addEventListener("keyup", e => {
     if(!player.directions.length){
       player.slowing = true;
       player.moving = false;
-      speeding(5, 0).then(() => {
+      gradual(5, 0).then(() => {
         player.down = false;
         player.slowing = false;
       });
@@ -178,7 +178,7 @@ document.addEventListener("keyup", e => {
     if(!player.directions.length){
       player.slowing = true;
       player.moving = false;
-      speeding(5, 0).then(() => {
+      gradual(5, 0).then(() => {
         player.right = false;
         player.slowing = false;
       });
