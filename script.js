@@ -2,9 +2,10 @@
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-c.font = "30px Arial";
+c.font = "100px Arial";
 c.fillStyle = "white";
-c.fillText("Loading...", 10, 50);
+c.textAlign = "center";
+c.fillText("Loading...", canvas.width / 2, canvas.height / 2);
 
 function random(number1, number2){
   return Math.round(Math.random() * (number2 - number1)) + number1;
@@ -49,7 +50,7 @@ player.y = random(player.radius, 2000 - player.radius);
 
 function gradual(from, to){
   return new Promise((resolve, reject) => {
-    var num = 0.5;
+    var num = 0.75;
     if(from > to) num = -num;
     var startTime = Date.now();
     var int = setInterval(() => {
@@ -68,6 +69,8 @@ var fps = 0;
 var FPS = 60;
 
 function animate(){
+  c.font = "30px Arial";
+  c.textAlign = "left";
   if(Date.now() - time >= 1000){
     time = Date.now();
     FPS = fps;
