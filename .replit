@@ -1,4 +1,5 @@
 hidden=[".config"]
+modules = ["nodejs-20", "web", "nix"]
 
 # hosting is currently hardcoded for this language
 # [hosting]
@@ -6,7 +7,7 @@ hidden=[".config"]
 # directory= "/"
 
 [nix]
-channel = "stable-21_11"
+channel = "stable-25_05"
 
 [languages.html]
 pattern = "**/*.html"
@@ -177,3 +178,6 @@ start = "vscode-css-language-server --stdio"
 
 [gitHubImport]
 requiredFiles = [".replit", "replit.nix", ".config"]
+
+[agent]
+expertMode = true
