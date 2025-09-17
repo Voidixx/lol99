@@ -13,10 +13,10 @@ const PORT = 5000;
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
-app.use(express.static('.'));
+app.use(express.static('public'));
 
 // Initialize SQLite database
-const db = new Database('gunbattle.db');
+const db = new Database('data/gunbattle.db');
 
 // Create tables
 db.exec(`
@@ -244,17 +244,31 @@ app.post('/api/login', async (req, res) => {
 // Get current shop items
 app.get('/api/shop', authenticateToken, (req, res) => {
   try {
-    const items = db.prepare('SELECT * FROM shop_items WHERE active = 1').all();
+    let items = db.prepare('SELECT * FROM shop_items WHERE active = 1').all();
     
-    // Calculate time until next rotation
+    // Check if current items have expired
     const now = new Date();
-    const nextRotation = new Date(Math.ceil(now.getTime() / (8 * 60 * 60 * 1000)) * (8 * 60 * 60 * 1000));
-    const timeLeft = nextRotation.getTime() - now.getTime();
+    const hasExpiredItems = items.some(item => new Date(item.expires_at) <= now);
+    
+    if (hasExpiredItems || items.length === 0) {
+      console.log('Shop items expired, generating new rotation...');
+      // Clear old items and generate new rotation
+      db.prepare('UPDATE shop_items SET active = 0').run();
+      generateShopRotation();
+      items = db.prepare('SELECT * FROM shop_items WHERE active = 1').all();
+    }
+    
+    // Calculate time left until next rotation based on expires_at of items
+    let timeLeft = 0;
+    if (items.length > 0) {
+      const expiresAt = new Date(items[0].expires_at);
+      timeLeft = Math.max(0, Math.floor((expiresAt.getTime() - now.getTime()) / 1000));
+    }
     
     res.json({
       items,
-      timeLeft: Math.floor(timeLeft / 1000), // seconds until rotation
-      nextRotation: nextRotation.toISOString()
+      timeLeft, // seconds until rotation
+      nextRotation: items.length > 0 ? items[0].expires_at : null
     });
     
   } catch (error) {
@@ -344,7 +358,7 @@ app.get('/api/profile', authenticateToken, (req, res) => {
 
 // Serve the main page
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Start server

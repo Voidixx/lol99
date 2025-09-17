@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gunbattle.io</title>
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <!-- Main Menu -->
+    <div id="mainMenu" class="screen active">
+      <div class="title-container">
+        <h1 class="game-title">GUNBATTLE.IO</h1>
+        <div class="title-subtitle">Battle Royale Arena</div>
+      </div>
+      
+      <div class="menu-buttons">
+        <button class="menu-btn primary" id="playBtn">PLAY</button>
+        <button class="menu-btn secondary" id="shopBtn">SHOP</button>
+        <button class="menu-btn secondary" id="loginBtn">LOGIN</button>
+        <button class="menu-btn secondary" id="registerBtn">SIGN UP</button>
+      </div>
+      
+      <div class="player-stats" id="playerStats" style="display: none;">
+        <div class="stats-item">
+          <span class="coins-icon">🪙</span>
+          <span id="coinsDisplay">0</span>
+        </div>
+        <div class="stats-item">
+          <span class="username" id="usernameDisplay">Player</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Login Form -->
+    <div id="loginScreen" class="screen">
+      <div class="form-container">
+        <h2 class="form-title">LOGIN</h2>
+        <form id="loginForm">
+          <div class="input-group">
+            <input type="text" id="loginUsername" placeholder="Username or Email" required>
+          </div>
+          <div class="input-group">
+            <input type="password" id="loginPassword" placeholder="Password" required>
+          </div>
+          <button type="submit" class="form-btn primary">LOGIN</button>
+          <button type="button" class="form-btn secondary" id="backToMenuFromLogin">BACK</button>
+        </form>
+        <div id="loginError" class="error-message"></div>
+      </div>
+    </div>
+
+    <!-- Register Form -->
+    <div id="registerScreen" class="screen">
+      <div class="form-container">
+        <h2 class="form-title">SIGN UP</h2>
+        <form id="registerForm">
+          <div class="input-group">
+            <input type="text" id="registerUsername" placeholder="Username" required>
+          </div>
+          <div class="input-group">
+            <input type="email" id="registerEmail" placeholder="Email" required>
+          </div>
+          <div class="input-group">
+            <input type="password" id="registerPassword" placeholder="Password" required>
+          </div>
+          <button type="submit" class="form-btn primary">SIGN UP</button>
+          <button type="button" class="form-btn secondary" id="backToMenuFromRegister">BACK</button>
+        </form>
+        <div id="registerError" class="error-message"></div>
+      </div>
+    </div>
+
+    <!-- Shop Screen -->
+    <div id="shopScreen" class="screen">
+      <div class="shop-container">
+        <div class="shop-header">
+          <h2 class="shop-title">ITEM SHOP</h2>
+          <div class="shop-timer">
+            <span class="timer-label">Next Rotation:</span>
+            <span id="shopTimer" class="timer-value">00:00:00</span>
+          </div>
+          <button class="close-btn" id="closeShop">✕</button>
+        </div>
+        
+        <div class="shop-tabs">
+          <button class="shop-tab active" data-tab="skins">SKINS</button>
+          <button class="shop-tab" data-tab="guns">GUNS</button>
+        </div>
+
+        <div class="shop-items" id="shopItems">
+          <!-- Shop items will be populated by JavaScript -->
+        </div>
+
+        <div class="shop-footer">
+          <div class="coin-balance">
+            <span class="coins-icon">🪙</span>
+            <span id="shopCoinsDisplay">0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="gameScreen" class="screen">
+      <canvas id="canvas"></canvas>
+      <div class="game-ui">
+        <div class="top-ui">
+          <div class="player-info">
+            <span id="gameUsernameDisplay">Player</span>
+            <span class="coins-icon">🪙</span>
+            <span id="gameCoinsDisplay">0</span>
+          </div>
+          <button class="menu-btn small" id="backToMenu">MENU</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="screen loading">
+      <div class="loading-content">
+        <h2>Loading Gunbattle.io...</h2>
+        <div class="loading-bar">
+          <div class="loading-progress" id="loadingProgress"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/load.js"></script>
+    <script src="js/menu.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/shop.js"></script>
+    <script src="js/script.js"></script>
+  </body>
+</html>
