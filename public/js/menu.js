@@ -3,16 +3,18 @@ class MenuManager {
   constructor() {
     this.currentScreen = 'mainMenu';
     this.user = null;
+    this.guestNickname = null;
     this.token = localStorage.getItem('gunbattle_token');
     
     this.initializeEventListeners();
     this.checkAuthStatus();
+    this.updatePlayerCount();
   }
 
   initializeEventListeners() {
     // Main menu buttons
     document.getElementById('playBtn').addEventListener('click', () => this.handlePlay());
-    document.getElementById('shopBtn').addEventListener('click', () => this.showScreen('shopScreen'));
+    document.getElementById('shopBtn').addEventListener('click', () => this.handleShop());
     document.getElementById('loginBtn').addEventListener('click', () => this.showScreen('loginScreen'));
     document.getElementById('registerBtn').addEventListener('click', () => this.showScreen('registerScreen'));
 
@@ -21,6 +23,19 @@ class MenuManager {
     document.getElementById('backToMenuFromRegister').addEventListener('click', () => this.showScreen('mainMenu'));
     document.getElementById('closeShop').addEventListener('click', () => this.showScreen('mainMenu'));
     document.getElementById('backToMenu').addEventListener('click', () => this.showScreen('mainMenu'));
+    
+    // Nickname input enter key
+    const nicknameInput = document.getElementById('nicknameInput');
+    if (nicknameInput) {
+      nicknameInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          this.handlePlay();
+        }
+      });
+      
+      // Auto-generate nickname placeholder
+      nicknameInput.placeholder = this.generateGuestName();
+    }
   }
 
   showScreen(screenId) {
@@ -33,20 +48,31 @@ class MenuManager {
     this.currentScreen = screenId;
 
     // Handle specific screen logic
-    if (screenId === 'shopScreen' && this.user) {
-      window.shopManager.loadShop();
+    if (screenId === 'shopScreen') {
+      if (this.user && window.shopManager) {
+        window.shopManager.loadShop();
+      }
     } else if (screenId === 'gameScreen') {
       this.startGame();
     }
   }
 
   handlePlay() {
-    if (this.user) {
-      this.showScreen('gameScreen');
-    } else {
-      this.showScreen('loginScreen');
-      this.showMessage('Please login to play!', 'info');
+    // Allow guest play - get nickname from input
+    const nicknameInput = document.getElementById('nicknameInput');
+    const nickname = nicknameInput ? nicknameInput.value.trim() : '';
+    
+    if (!nickname && !this.user) {
+      this.showMessage('Please enter a nickname to play!', 'info');
+      return;
     }
+    
+    // Set guest nickname if not logged in
+    if (!this.user && nickname) {
+      this.guestNickname = nickname;
+    }
+    
+    this.showScreen('gameScreen');
   }
 
   startGame() {
@@ -55,11 +81,12 @@ class MenuManager {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     
-    // Update game UI with user info
-    if (this.user) {
-      document.getElementById('gameUsernameDisplay').textContent = this.user.username;
-      document.getElementById('gameCoinsDisplay').textContent = this.user.coins;
-    }
+    // Update game UI with user info or guest nickname
+    const displayName = this.user ? this.user.username : (this.guestNickname || 'Guest');
+    const displayCoins = this.user ? this.user.coins : 0;
+    
+    document.getElementById('gameUsernameDisplay').textContent = displayName;
+    document.getElementById('gameCoinsDisplay').textContent = displayCoins;
 
     // Start the game animation loop
     if (typeof animate === 'function') {
@@ -270,22 +297,48 @@ class MenuManager {
    * Reset equipment previews to default state
    */
   resetEquipmentPreviews() {
-    const currentSkinName = document.getElementById('currentSkinName');
-    const characterBody = document.getElementById('characterBody');
-    const currentWeaponName = document.getElementById('currentWeaponName');
-    const weaponIcon = document.getElementById('weaponIcon');
-    const weaponDamage = document.getElementById('weaponDamage');
-    const weaponRate = document.getElementById('weaponRate');
-    
-    if (currentSkinName) currentSkinName.textContent = 'Default';
-    if (characterBody) {
-      characterBody.className = 'character-body skin-default';
-      characterBody.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+    // Note: Equipment previews are not in the new .io design
+    // This method is kept for compatibility
+  }
+  
+  /**
+   * Handle shop access
+   */
+  handleShop() {
+    if (this.user) {
+      this.showScreen('shopScreen');
+    } else {
+      this.showMessage('Login or create an account to access the shop!', 'info');
     }
-    if (currentWeaponName) currentWeaponName.textContent = 'Pistol';
-    if (weaponIcon) weaponIcon.className = 'weapon-icon weapon-pistol';
-    if (weaponDamage) weaponDamage.textContent = '25';
-    if (weaponRate) weaponRate.textContent = '⭐⭐⭐';
+  }
+  
+  /**
+   * Generate a random guest name
+   */
+  generateGuestName() {
+    const adjectives = ['Swift', 'Silent', 'Brave', 'Wild', 'Iron', 'Shadow', 'Lightning', 'Fire', 'Ice', 'Golden'];
+    const nouns = ['Warrior', 'Hunter', 'Fighter', 'Ranger', 'Knight', 'Scout', 'Soldier', 'Guardian', 'Champion', 'Hero'];
+    
+    const adj = adjectives[Math.floor(Math.random() * adjectives.length)];
+    const noun = nouns[Math.floor(Math.random() * nouns.length)];
+    
+    return `${adj}${noun}`;
+  }
+  
+  /**
+   * Update player count display
+   */
+  updatePlayerCount() {
+    const playerCountEl = document.getElementById('playerCount');
+    if (playerCountEl) {
+      // Simulate player count and ping
+      const playerCount = Math.floor(Math.random() * 20) + 5;
+      const ping = Math.floor(Math.random() * 100) + 150;
+      playerCountEl.textContent = `${playerCount} players • ${ping}ms`;
+    }
+    
+    // Update every 30 seconds
+    setTimeout(() => this.updatePlayerCount(), 30000);
   }
 }
 
