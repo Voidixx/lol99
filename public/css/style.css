@@ -192,7 +192,9 @@ html, body {
   border: 2px solid rgba(255, 255, 255, 0.3);
   text-align: center;
   z-index: 10;
-  min-width: 350px;
+  width: 90%;
+  max-width: 400px;
+  min-width: 280px;
   backdrop-filter: blur(10px);
 }
 
@@ -663,27 +665,44 @@ canvas {
   transition: width 0.3s ease;
 }
 
+/* Tablet and Small Desktop */
+@media (max-width: 1024px) {
+  .io-title {
+    font-size: 3.5rem;
+  }
+  
+  .play-panel {
+    padding: 25px;
+    max-width: 350px;
+  }
+}
+
 /* Mobile Responsive Design */
 @media (max-width: 768px) {
   .io-title {
     font-size: 2.5rem;
+    letter-spacing: 1px;
   }
   
   .top-nav {
     top: 10px;
     right: 10px;
     gap: 5px;
+    flex-wrap: wrap;
   }
   
   .nav-btn {
     padding: 8px 12px;
     font-size: 12px;
+    min-width: auto;
   }
   
   .play-panel {
+    width: 85%;
+    max-width: 320px;
     min-width: 280px;
     padding: 20px;
-    margin: 0 15px;
+    margin: 0 auto;
   }
   
   .nickname-input {
@@ -697,15 +716,17 @@ canvas {
   }
   
   .form-container {
+    width: 85%;
+    max-width: 320px;
     min-width: 280px;
-    margin: 0 15px;
+    margin: 0 auto;
     padding: 25px;
   }
   
   .shop-container {
     width: 95%;
     height: 85%;
-    margin: 0 10px;
+    margin: 0 auto;
   }
   
   .shop-items {
@@ -719,6 +740,7 @@ canvas {
     gap: 15px;
     flex-wrap: wrap;
     justify-content: center;
+    padding: 0 10px;
   }
   
   .bottom-link {
@@ -739,6 +761,7 @@ canvas {
     top: 10px;
     left: 10px;
     gap: 10px;
+    flex-wrap: wrap;
   }
   
   .stats-item {
@@ -747,39 +770,100 @@ canvas {
   }
 }
 
+/* Small Mobile */
 @media (max-width: 480px) {
   .io-title {
     font-size: 2rem;
+    letter-spacing: 0.5px;
+  }
+  
+  .top-nav {
+    gap: 3px;
+  }
+  
+  .nav-btn {
+    padding: 6px 10px;
+    font-size: 11px;
   }
   
   .play-panel {
+    width: 90%;
+    max-width: 280px;
     min-width: 250px;
     padding: 15px;
   }
   
   .nickname-input {
     font-size: 14px;
+    padding: 10px;
   }
   
   .play-button {
     font-size: 18px;
+    padding: 12px;
   }
   
   .form-container {
+    width: 90%;
+    max-width: 280px;
     min-width: 250px;
     padding: 20px;
   }
   
   .shop-items {
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 8px;
   }
   
   .bottom-links {
-    gap: 10px;
+    gap: 8px;
+    padding: 0 5px;
   }
   
   .bottom-link {
-    font-size: 11px;
+    font-size: 10px;
+  }
+  
+  .player-stats {
+    gap: 5px;
+  }
+  
+  .stats-item {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+  
+  .coins-icon {
+    font-size: 1rem;
+  }
+}
+
+/* Extra Small Mobile */
+@media (max-width: 360px) {
+  .io-title {
+    font-size: 1.8rem;
+  }
+  
+  .play-panel {
+    width: 95%;
+    padding: 12px;
+    min-width: 220px;
+  }
+  
+  .nickname-input {
+    font-size: 13px;
+    padding: 8px;
+  }
+  
+  .play-button {
+    font-size: 16px;
+    padding: 10px;
+  }
+  
+  .form-container {
+    width: 95%;
+    padding: 15px;
+    min-width: 220px;
   }
 }
 
@@ -797,6 +881,7 @@ canvas {
   .play-panel {
     padding: 15px;
     margin-bottom: 10px;
+    max-width: 300px;
   }
   
   .bottom-links {
@@ -805,6 +890,16 @@ canvas {
   
   .leaderboard-btn-container {
     bottom: 5px;
+  }
+  
+  .top-nav {
+    top: 5px;
+    right: 5px;
+  }
+  
+  .player-stats {
+    top: 5px;
+    left: 5px;
   }
 }
 

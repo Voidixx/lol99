@@ -9,6 +9,7 @@ class MenuManager {
     this.initializeEventListeners();
     this.checkAuthStatus();
     this.updatePlayerCount();
+    this.setupWindowResize();
   }
 
   initializeEventListeners() {
@@ -60,15 +61,18 @@ class MenuManager {
   handlePlay() {
     // Allow guest play - get nickname from input
     const nicknameInput = document.getElementById('nicknameInput');
-    const nickname = nicknameInput ? nicknameInput.value.trim() : '';
+    let nickname = nicknameInput ? nicknameInput.value.trim() : '';
     
+    // Auto-assign nickname if empty
     if (!nickname && !this.user) {
-      this.showMessage('Please enter a nickname to play!', 'info');
-      return;
+      nickname = this.generateGuestName();
+      if (nicknameInput) {
+        nicknameInput.value = nickname;
+      }
     }
     
     // Set guest nickname if not logged in
-    if (!this.user && nickname) {
+    if (!this.user) {
       this.guestNickname = nickname;
     }
     
@@ -136,10 +140,13 @@ class MenuManager {
       if (!document.getElementById('logoutBtn')) {
         const logoutBtn = document.createElement('button');
         logoutBtn.id = 'logoutBtn';
-        logoutBtn.className = 'menu-btn secondary';
-        logoutBtn.textContent = '🚪 LOGOUT';
+        logoutBtn.className = 'nav-btn';
+        logoutBtn.textContent = 'Logout';
         logoutBtn.addEventListener('click', () => this.logout());
-        document.querySelector('.menu-buttons').appendChild(logoutBtn);
+        const topNav = document.querySelector('.top-nav');
+        if (topNav) {
+          topNav.appendChild(logoutBtn);
+        }
       }
     } else {
       // Hide player stats
@@ -308,7 +315,11 @@ class MenuManager {
     if (this.user) {
       this.showScreen('shopScreen');
     } else {
-      this.showMessage('Login or create an account to access the shop!', 'info');
+      this.showMessage('Login or create an account to access the shop and unlock skins!', 'info');
+      // Optionally redirect to login after showing message
+      setTimeout(() => {
+        this.showScreen('loginScreen');
+      }, 2000);
     }
   }
   
@@ -339,6 +350,21 @@ class MenuManager {
     
     // Update every 30 seconds
     setTimeout(() => this.updatePlayerCount(), 30000);
+  }
+  
+  /**
+   * Setup window resize handling for responsive canvas
+   */
+  setupWindowResize() {
+    window.addEventListener('resize', () => {
+      if (this.currentScreen === 'gameScreen') {
+        const canvas = document.getElementById('canvas');
+        if (canvas) {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+        }
+      }
+    });
   }
 }
 
