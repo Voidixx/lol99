@@ -53,8 +53,8 @@ db.exec(`
   );
 `);
 
-// JWT Secret
-const JWT_SECRET = 'gunbattle_secret_' + Math.random().toString(36);
+// JWT Secret from environment variable or fallback
+const JWT_SECRET = process.env.SESSION_SECRET || 'gunbattle_secret_' + Math.random().toString(36);
 
 // Shop data - predefined items that can appear in rotation
 const SHOP_ITEMS = {

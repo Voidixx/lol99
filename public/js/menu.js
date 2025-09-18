@@ -102,12 +102,15 @@ class MenuManager {
       document.getElementById('loginBtn').style.display = 'none';
       document.getElementById('registerBtn').style.display = 'none';
       
+      // Update equipment previews with user's current items
+      this.updateEquipmentPreviews();
+      
       // Create logout button if it doesn't exist
       if (!document.getElementById('logoutBtn')) {
         const logoutBtn = document.createElement('button');
         logoutBtn.id = 'logoutBtn';
         logoutBtn.className = 'menu-btn secondary';
-        logoutBtn.textContent = 'LOGOUT';
+        logoutBtn.textContent = '🚪 LOGOUT';
         logoutBtn.addEventListener('click', () => this.logout());
         document.querySelector('.menu-buttons').appendChild(logoutBtn);
       }
@@ -118,6 +121,9 @@ class MenuManager {
       // Show login/register buttons
       document.getElementById('loginBtn').style.display = 'block';
       document.getElementById('registerBtn').style.display = 'block';
+      
+      // Reset equipment previews to defaults
+      this.resetEquipmentPreviews();
       
       // Remove logout button
       const logoutBtn = document.getElementById('logoutBtn');
@@ -186,6 +192,100 @@ class MenuManager {
         }
       }
     }
+  }
+
+  /**
+   * Update equipment preview areas with user's current items
+   */
+  updateEquipmentPreviews() {
+    if (!this.user) return;
+
+    // Update skin preview
+    const currentSkinName = document.getElementById('currentSkinName');
+    const characterBody = document.getElementById('characterBody');
+    
+    if (currentSkinName) {
+      currentSkinName.textContent = this.user.equipped_skin || 'Default';
+    }
+    
+    if (characterBody) {
+      // Apply skin-specific styling
+      const skinClass = `skin-${(this.user.equipped_skin || 'default').toLowerCase().replace(/\s+/g, '-')}`;
+      characterBody.className = `character-body ${skinClass}`;
+      
+      // Set background color based on skin
+      const skinColors = {
+        'ninja': '#2c3e50',
+        'warrior': '#e74c3c', 
+        'ghost': '#95a5a6',
+        'fire-lord': '#f39c12',
+        'ice-king': '#3498db',
+        'dragon-slayer': '#9b59b6',
+        'golden-emperor': '#f1c40f',
+        'default': '#667eea'
+      };
+      
+      const skinKey = (this.user.equipped_skin || 'default').toLowerCase().replace(/\s+/g, '-');
+      const skinColor = skinColors[skinKey] || skinColors.default;
+      characterBody.style.background = `linear-gradient(135deg, ${skinColor} 0%, ${skinColor}80 100%)`;
+    }
+
+    // Update weapon preview
+    const currentWeaponName = document.getElementById('currentWeaponName');
+    const weaponIcon = document.getElementById('weaponIcon');
+    const weaponDamage = document.getElementById('weaponDamage');
+    const weaponRate = document.getElementById('weaponRate');
+    
+    const equippedWeapon = this.user.equipped_gun || 'pistol';
+    
+    if (currentWeaponName) {
+      currentWeaponName.textContent = equippedWeapon.charAt(0).toUpperCase() + equippedWeapon.slice(1);
+    }
+    
+    if (weaponIcon) {
+      // Apply weapon-specific class for icon
+      const weaponClass = `weapon-${equippedWeapon.toLowerCase().replace(/\s+/g, '-')}`;
+      weaponIcon.className = `weapon-icon ${weaponClass}`;
+    }
+    
+    // Update weapon stats based on equipped weapon
+    const weaponStats = {
+      'pistol': { damage: 25, rate: '⭐⭐⭐' },
+      'smg': { damage: 20, rate: '⭐⭐⭐⭐' },
+      'shotgun': { damage: 60, rate: '⭐⭐☆' },
+      'assault rifle': { damage: 35, rate: '⭐⭐⭐' },
+      'sniper rifle': { damage: 80, rate: '⭐⭐☆' },
+      'rocket launcher': { damage: 100, rate: '⭐☆☆' },
+      'plasma cannon': { damage: 75, rate: '⭐⭐☆' },
+      'lightning gun': { damage: 90, rate: '⭐⭐☆' }
+    };
+    
+    const stats = weaponStats[equippedWeapon.toLowerCase()] || weaponStats.pistol;
+    
+    if (weaponDamage) weaponDamage.textContent = stats.damage;
+    if (weaponRate) weaponRate.textContent = stats.rate;
+  }
+
+  /**
+   * Reset equipment previews to default state
+   */
+  resetEquipmentPreviews() {
+    const currentSkinName = document.getElementById('currentSkinName');
+    const characterBody = document.getElementById('characterBody');
+    const currentWeaponName = document.getElementById('currentWeaponName');
+    const weaponIcon = document.getElementById('weaponIcon');
+    const weaponDamage = document.getElementById('weaponDamage');
+    const weaponRate = document.getElementById('weaponRate');
+    
+    if (currentSkinName) currentSkinName.textContent = 'Default';
+    if (characterBody) {
+      characterBody.className = 'character-body skin-default';
+      characterBody.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+    }
+    if (currentWeaponName) currentWeaponName.textContent = 'Pistol';
+    if (weaponIcon) weaponIcon.className = 'weapon-icon weapon-pistol';
+    if (weaponDamage) weaponDamage.textContent = '25';
+    if (weaponRate) weaponRate.textContent = '⭐⭐⭐';
   }
 }
 

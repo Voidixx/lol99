@@ -2,32 +2,69 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Gunbattle.io</title>
     <link rel="stylesheet" href="css/style.css">
   </head>
   <body>
     <!-- Main Menu -->
     <div id="mainMenu" class="screen active">
-      <div class="title-container">
-        <h1 class="game-title">GUNBATTLE.IO</h1>
-        <div class="title-subtitle">Battle Royale Arena</div>
-      </div>
-      
-      <div class="menu-buttons">
-        <button class="menu-btn primary" id="playBtn">PLAY</button>
-        <button class="menu-btn secondary" id="shopBtn">SHOP</button>
-        <button class="menu-btn secondary" id="loginBtn">LOGIN</button>
-        <button class="menu-btn secondary" id="registerBtn">SIGN UP</button>
-      </div>
-      
-      <div class="player-stats" id="playerStats" style="display: none;">
-        <div class="stats-item">
-          <span class="coins-icon">🪙</span>
-          <span id="coinsDisplay">0</span>
+      <div class="menu-content">
+        <div class="title-container">
+          <h1 class="game-title">GUNBATTLE.IO</h1>
+          <div class="title-subtitle">Battle Royale Arena</div>
         </div>
-        <div class="stats-item">
-          <span class="username" id="usernameDisplay">Player</span>
+        
+        <div class="main-layout">
+          <!-- Left Equipment Preview -->
+          <div class="equipment-panel">
+            <div class="equipment-section">
+              <h3 class="equipment-title">Current Skin</h3>
+              <div class="skin-preview" id="currentSkinPreview">
+                <div class="character-placeholder">
+                  <div class="character-body" id="characterBody"></div>
+                  <div class="skin-name" id="currentSkinName">Default</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Center Menu Buttons -->
+          <div class="menu-buttons">
+            <button class="menu-btn primary" id="playBtn">⚔️ PLAY NOW</button>
+            <button class="menu-btn secondary" id="shopBtn">🛒 SHOP</button>
+            <button class="menu-btn secondary" id="loginBtn">🔐 LOGIN</button>
+            <button class="menu-btn secondary" id="registerBtn">📝 SIGN UP</button>
+          </div>
+          
+          <!-- Right Weapon Preview -->
+          <div class="equipment-panel">
+            <div class="equipment-section">
+              <h3 class="equipment-title">Current Weapon</h3>
+              <div class="weapon-preview" id="currentWeaponPreview">
+                <div class="weapon-placeholder">
+                  <div class="weapon-icon" id="weaponIcon">🔫</div>
+                  <div class="weapon-name" id="currentWeaponName">Pistol</div>
+                  <div class="weapon-stats">
+                    <div class="stat">DMG: <span id="weaponDamage">25</span></div>
+                    <div class="stat">ROF: <span id="weaponRate">★★☆</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="player-stats" id="playerStats" style="display: none;">
+          <div class="stats-item">
+            <span class="coins-icon">🪙</span>
+            <span id="coinsDisplay">0</span>
+          </div>
+          <div class="stats-item">
+            <span class="username" id="usernameDisplay">Player</span>
+          </div>
         </div>
       </div>
     </div>

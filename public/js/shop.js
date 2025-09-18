@@ -160,13 +160,12 @@ class ShopManager {
       itemEl.classList.add('owned');
     }
 
-    // Create preview styling
+    // Create preview styling with specific CSS classes
     const previewColor = item.color || this.getDefaultColor(item.rarity);
-    const previewIcon = item.type === 'skin' ? '👤' : '🔫';
+    const itemClass = this.getItemCSSClass(item);
 
     itemEl.innerHTML = `
-      <div class="item-preview" style="background-color: ${previewColor}">
-        <span class="item-icon">${previewIcon}</span>
+      <div class="item-preview ${itemClass}" style="${item.color ? `background: linear-gradient(135deg, ${item.color}40 0%, ${item.color}20 100%);` : ''}">
       </div>
       <div class="item-info">
         <div class="item-name">${this.escapeHtml(item.name)}</div>
@@ -202,6 +201,14 @@ class ShopManager {
 
     const propName = itemType === 'skin' ? 'owned_skins' : 'owned_guns';
     return menuManager.user[propName] || [];
+  }
+
+  /**
+   * Get CSS class for specific items
+   */
+  getItemCSSClass(item) {
+    const name = item.name.toLowerCase().replace(/\s+/g, '-');
+    return `${item.type}-${name}`;
   }
 
   /**
